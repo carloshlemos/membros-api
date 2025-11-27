@@ -4,10 +4,21 @@ from app.domain import schemas
 from ..service.membro import MembroService
 from .. import security
 from pymongo import ASCENDING, DESCENDING
+from datetime import timedelta
 
 router = APIRouter(
     tags=['Membro']
 )
+
+@router.post("/membros/new/token")
+def generate_new_member_token():
+    expires_delta = timedelta(hours=24)
+    access_token = security.create_access_token(
+        data={"sub": "new_member", "type": "new_member"},
+        expires_delta=expires_delta
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
+
 
 @router.post("/membros/{membro_id}/token")
 def generate_token(membro_id: str):
