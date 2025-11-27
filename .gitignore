@@ -1,0 +1,7 @@
+.idea
+variables.env
+*.csv
+*.html
+*.pdf
+*.xlsx
+*.txt
