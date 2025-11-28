@@ -59,3 +59,7 @@ class UpdateMembro(BaseModel):
 class MembrosResponse(BaseModel):
     total: int
     membros: list[Membro]
+
+
+class NewMemberTokenRequest(BaseModel):
+    telefone: str

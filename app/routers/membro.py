@@ -2,22 +2,22 @@ from typing import Optional
 from fastapi import APIRouter, Query, Request, HTTPException, Depends
 from app.domain import schemas
 from ..service.membro import MembroService
+from ..service.new_member import NewMemberService
 from .. import security
 from pymongo import ASCENDING, DESCENDING
 from datetime import timedelta
+
+from app.service.new_member import NewMemberService
 
 router = APIRouter(
     tags=['Membro']
 )
 
+
 @router.post("/membros/new/token")
-def generate_new_member_token():
-    expires_delta = timedelta(hours=24)
-    access_token = security.create_access_token(
-        data={"sub": "new_member", "type": "new_member"},
-        expires_delta=expires_delta
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
+def generate_new_member_token(data: schemas.NewMemberTokenRequest):
+    token = NewMemberService().generate_token(data.telefone)
+    return {"access_token": token, "token_type": "bearer"}
 
 
 @router.post("/membros/{membro_id}/token")
@@ -34,7 +34,7 @@ def generate_token(membro_id: str):
 def get_current_member(current_member_id: str = Depends(security.get_current_member_id)):
     membro = MembroService().get_by_id(current_member_id)
     if not membro:
-        raise HTTPException(status_code=404, detail="Membro not found")
+        raise HTTPException(status_code=404, detail="Membro não encontrado.")
     return membro
 
 
@@ -45,7 +45,7 @@ def update_current_member(
 ):
     updated_membro = MembroService().update_membro(current_member_id, data)
     if not updated_membro:
-        raise HTTPException(status_code=404, detail="Membro not found")
+        raise HTTPException(status_code=404, detail="Membro não encontrado.")
     return updated_membro
 
 @router.get("/membros", response_model=schemas.MembrosResponse)
