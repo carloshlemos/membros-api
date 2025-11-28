@@ -16,22 +16,22 @@ router = APIRouter(
 
 @router.post("/membros/new/token")
 def generate_new_member_token(data: schemas.NewMemberTokenRequest):
-    token = NewMemberService().generate_token(data.telefone)
+    token = NewMemberService().generate_token(data.celular)
     return {"access_token": token, "token_type": "bearer"}
 
 
 @router.put("/membros/new", response_model=schemas.NewMember)
 def update_new_member(
     data: schemas.UpdateNewMember,
-    current_telefone: str = Depends(security.get_current_new_member_telefone)
+    current_celular: str = Depends(security.get_current_new_member_celular)
 ):
-    NewMemberService().update_new_member(current_telefone, data)
-    return NewMemberService().get_by_telefone(current_telefone)
+    NewMemberService().update_new_member(current_celular, data)
+    return NewMemberService().get_by_celular(current_celular)
 
 
 @router.get("/membros/new/me", response_model=schemas.NewMember)
-def get_current_new_member(current_telefone: str = Depends(security.get_current_new_member_telefone)):
-    membro = NewMemberService().get_by_telefone(current_telefone)
+def get_current_new_member(current_celular: str = Depends(security.get_current_new_member_celular)):
+    membro = NewMemberService().get_by_celular(current_celular)
     if not membro:
         raise HTTPException(status_code=404, detail="Membro não encontrado.")
     return membro

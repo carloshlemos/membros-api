@@ -40,7 +40,7 @@ def get_current_member_id(token: str = Depends(oauth2_scheme)):
     return member_id
 
 
-def get_current_new_member_telefone(token: str = Depends(oauth2_scheme)):
+def get_current_new_member_celular(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -48,9 +48,9 @@ def get_current_new_member_telefone(token: str = Depends(oauth2_scheme)):
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        telefone: str = payload.get("sub")
-        if telefone is None:
+        celular: str = payload.get("sub")
+        if celular is None:
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    return telefone
+    return celular
