@@ -4,7 +4,6 @@ from fastapi import APIRouter, Query, Request, HTTPException, Depends
 from pymongo import ASCENDING, DESCENDING
 
 from app.domain import schemas
-from app.service.new_member import NewMemberService
 from .. import security
 from ..service.membro import MembroService
 
@@ -15,7 +14,7 @@ router = APIRouter(
 
 @router.post("/membros/new/token")
 def generate_new_member_token(data: schemas.NewMemberTokenRequest):
-    token = NewMemberService().generate_token(data.celular)
+    token = MembroService().new_member_generate_token(data.celular)
     return {"access_token": token, "token_type": "bearer"}
 
 
@@ -24,13 +23,13 @@ def update_new_member(
     data: schemas.UpdateNewMember,
     current_celular: str = Depends(security.get_current_new_member_celular)
 ):
-    NewMemberService().update_new_member(current_celular, data)
-    return NewMemberService().get_by_celular(current_celular)
+    MembroService().update_new_member(current_celular, data)
+    return MembroService().get_by_celular(current_celular)
 
 
 @router.get("/membros/new/me", response_model=schemas.NewMember)
 def get_current_new_member(current_celular: str = Depends(security.get_current_new_member_celular)):
-    membro = NewMemberService().get_by_celular(current_celular)
+    membro = MembroService().get_by_celular(current_celular)
     if not membro:
         raise HTTPException(status_code=404, detail="Membro não encontrado.")
     return membro
