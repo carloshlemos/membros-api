@@ -22,17 +22,38 @@ class Membro(BaseModel):
     telefone: Optional[str] = None
     celular: Optional[str] = None
     email: Optional[str] = None
-    nascimento: Optional[str] = None
+    nascimento: Optional[datetime] = None
     naturalidade: Optional[str] = None
     estado_civil: Optional[str] = None
     escolaridade: Optional[str] = None
     profissao: Optional[str] = None
     tipo_membro: Optional[str] = None
     oficio: Optional[str] = None
+    pais: Optional[str] = None
+    nome_pai: Optional[str] = None
+    nome_mae: Optional[str] = None
+    nome_conjuge: Optional[str] = None
+    data_casamento: Optional[datetime] = None
+    rg: Optional[str] = None
+    batismo_data: Optional[datetime] = None
+    batismo_pastor: Optional[str] = None
+    batismo_igreja: Optional[str] = None
+    profissao_fe_data: Optional[datetime] = None
+    profissao_fe_pastor: Optional[str] = None
+    profissao_fe_igreja: Optional[str] = None
 
     # campos criados automaticamente — NÃO vem do frontend
     dados_atualizados: Optional[bool] = None
     ultima_atualizacao: Optional[datetime] = None
+
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {
+            ObjectId: str
+        }
+        populate_by_name = True # Changed from allow_population_by_field_name
+
+
 
 class UpdateMembro(BaseModel):
     nome: Optional[str] = None
@@ -45,13 +66,25 @@ class UpdateMembro(BaseModel):
     telefone: Optional[str] = None
     celular: Optional[str] = None
     email: Optional[str] = None
-    nascimento: Optional[str] = None
+    nascimento: Optional[datetime] = None
     naturalidade: Optional[str] = None
     estado_civil: Optional[str] = None
     escolaridade: Optional[str] = None
     profissao: Optional[str] = None
     tipo_membro: Optional[str] = None
     oficio: Optional[str] = None
+    pais: Optional[str] = None
+    nome_pai: Optional[str] = None
+    nome_mae: Optional[str] = None
+    nome_conjuge: Optional[str] = None
+    data_casamento: Optional[datetime] = None
+    rg: Optional[str] = None
+    batismo_data: Optional[datetime] = None
+    batismo_pastor: Optional[str] = None
+    batismo_igreja: Optional[str] = None
+    profissao_fe_data: Optional[datetime] = None
+    profissao_fe_pastor: Optional[str] = None
+    profissao_fe_igreja: Optional[str] = None
 
     dados_atualizados: Optional[bool] = None
     ultima_atualizacao: Optional[datetime] = None
@@ -62,7 +95,7 @@ class MembrosResponse(BaseModel):
 
 
 class NewMemberTokenRequest(BaseModel):
-    telefone: str
+    celular: str
 
 
 class NewMember(BaseModel):
@@ -78,13 +111,32 @@ class NewMember(BaseModel):
     telefone: Optional[str] = None
     celular: Optional[str] = None
     email: Optional[str] = None
-    nascimento: Optional[str] = None
+    nascimento: Optional[datetime] = None
     naturalidade: Optional[str] = None
     estado_civil: Optional[str] = None
     escolaridade: Optional[str] = None
     profissao: Optional[str] = None
     tipo_membro: Optional[str] = None
     oficio: Optional[str] = None
+    pais: Optional[str] = None
+    nome_pai: Optional[str] = None
+    nome_mae: Optional[str] = None
+    nome_conjuge: Optional[str] = None
+    data_casamento: Optional[datetime] = None
+    rg: Optional[str] = None
+    batismo_data: Optional[datetime] = None
+    batismo_pastor: Optional[str] = None
+    batismo_igreja: Optional[str] = None
+    profissao_fe_data: Optional[datetime] = None
+    profissao_fe_pastor: Optional[str] = None
+    profissao_fe_igreja: Optional[str] = None
+
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {
+            ObjectId: str
+        }
+        populate_by_name = True # Changed from allow_population_by_field_name
 
 
 class UpdateNewMember(BaseModel):
@@ -98,10 +150,22 @@ class UpdateNewMember(BaseModel):
     telefone: Optional[str] = None
     celular: Optional[str] = None
     email: Optional[str] = None
-    nascimento: Optional[str] = None
+    nascimento: Optional[datetime] = None
     naturalidade: Optional[str] = None
     estado_civil: Optional[str] = None
     escolaridade: Optional[str] = None
     profissao: Optional[str] = None
     tipo_membro: Optional[str] = None
     oficio: Optional[str] = None
+    pais: Optional[str] = None
+    nome_pai: Optional[str] = None
+    nome_mae: Optional[str] = None
+    nome_conjuge: Optional[str] = None
+    data_casamento: Optional[datetime] = None
+    rg: Optional[str] = None
+    batismo_data: Optional[datetime] = None
+    batismo_pastor: Optional[str] = None
+    batismo_igreja: Optional[str] = None
+    profissao_fe_data: Optional[datetime] = None
+    profissao_fe_pastor: Optional[str] = None
+    profissao_fe_igreja: Optional[str] = None
