@@ -12,5 +12,45 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  postgres:
+    image: postgres:15.5-alpine3.19
+    container_name: evolution-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin@123
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: evolution-redis
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+  evolution-api:
+    image: evoapicloud/evolution-api:v2.3.5
+    container_name: evolution-api
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_URL=http://localhost:8080
+      - AUTHENTICATION_API_KEY=u}-Dly,PO5Jbeb(\~*tR
+      - CONFIG_SESSION_PHONE_VERSION=2.3000.1032139176-alpha
+      - CACHE_REDIS_ENABLED=true
+      - CACHE_REDIS_URI=redis://evolution-redis:6379
+      - CACHE_REDIS_PREFIX_KEY=evolution
+      - DATABASE_ENABLED=true
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_CONNECTION_URI=postgresql://postgres:admin@123@postgres:5432/postgres?schema=public
+    depends_on:
+      - postgres
+
 volumes:
   mongo-data:
+  postgres_data:
+  redis_data:

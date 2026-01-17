@@ -94,6 +94,10 @@ class MembrosResponse(BaseModel):
     membros: list[Membro]
 
 
+class MembroTokenRequest(BaseModel):
+    celular: str
+
+
 class NewMemberTokenRequest(BaseModel):
     celular: str
 

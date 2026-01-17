@@ -1,13 +1,12 @@
 from typing import Optional
-from fastapi import APIRouter, Query, Request, HTTPException, Depends
-from app.domain import schemas
-from ..service.membro import MembroService
-from ..service.new_member import NewMemberService
-from .. import security
-from pymongo import ASCENDING, DESCENDING
-from datetime import timedelta
 
+from fastapi import APIRouter, Query, Request, HTTPException, Depends
+from pymongo import ASCENDING, DESCENDING
+
+from app.domain import schemas
 from app.service.new_member import NewMemberService
+from .. import security
+from ..service.membro import MembroService
 
 router = APIRouter(
     tags=['Membro']
@@ -38,13 +37,9 @@ def get_current_new_member(current_celular: str = Depends(security.get_current_n
 
 
 @router.post("/membros/{membro_id}/token")
-def generate_token(membro_id: str):
-    membro = MembroService().get_by_id(membro_id)
-    if not membro:
-        raise HTTPException(status_code=404, detail="Membro not found")
-    
-    access_token = security.create_access_token(data={"sub": membro_id})
-    return {"access_token": access_token, "token_type": "bearer"}
+def generate_token(membro_id: str, data: schemas.MembroTokenRequest):
+    token = MembroService().generate_token(membro_id, data.celular)
+    return {"access_token": token, "token_type": "bearer"}
 
 
 @router.get("/membros/me", response_model=schemas.Membro)
