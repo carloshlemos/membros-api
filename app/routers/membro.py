@@ -6,6 +6,7 @@ from pymongo import ASCENDING, DESCENDING
 from app.domain import schemas
 from .. import security
 from ..service.membro import MembroService
+from ..service.new_member import NewMemberService
 
 router = APIRouter(
     tags=['Membro']
@@ -23,8 +24,7 @@ def update_new_member(
     data: schemas.UpdateNewMember,
     current_celular: str = Depends(security.get_current_new_member_celular)
 ):
-    MembroService().update_new_member(current_celular, data)
-    return MembroService().get_by_celular(current_celular)
+    return NewMemberService().update_new_member(current_celular, data)
 
 
 @router.get("/membros/new/me", response_model=schemas.NewMember)

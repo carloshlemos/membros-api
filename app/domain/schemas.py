@@ -4,7 +4,8 @@ from uuid import uuid4
 from zoneinfo import ZoneInfo
 
 from bson import ObjectId
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
+
 
 TZ = ZoneInfo("America/Sao_Paulo")
 
@@ -88,6 +89,13 @@ class UpdateMembro(BaseModel):
 
     dados_atualizados: Optional[bool] = None
     ultima_atualizacao: Optional[datetime] = None
+
+    @validator("nascimento", "data_casamento", "batismo_data", "profissao_fe_data", pre=True)
+    def empty_str_to_none(cls, v):
+        if v == "":
+            return None
+        return v
+
 
 class MembrosResponse(BaseModel):
     total: int
@@ -173,3 +181,9 @@ class UpdateNewMember(BaseModel):
     profissao_fe_data: Optional[datetime] = None
     profissao_fe_pastor: Optional[str] = None
     profissao_fe_igreja: Optional[str] = None
+
+    @validator("nascimento", "data_casamento", "batismo_data", "profissao_fe_data", pre=True)
+    def empty_str_to_none(cls, v):
+        if v == "":
+            return None
+        return v
